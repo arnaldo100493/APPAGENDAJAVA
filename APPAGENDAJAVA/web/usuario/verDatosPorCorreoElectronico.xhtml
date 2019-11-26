@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../layout/layout.xhtml">
+
+            <ui:define name="top">
+            </ui:define>
+
+            <ui:define name="content">
+                <h2>Mis datos</h2>
+                <hr/>
+                <h:form id="formUsuario" class="formulario">
+                    <p:growl id="mensajeGeneral" showDetail="true" sticky="false"/>
+                    <p:dataTable id="tablaUsuario" var="item" value="#{managedBeanViewUsuario.byCorreoElectronico}" paginator="false" rows="1">
+                        <p:column headerText="Avatar">
+                            <p:graphicImage id="avatarUsuario" value="#{FacesContext.getCurrentInstance().getExternalContext()}/avatar/#{item.codigoUsuario}.png" width="70" height="70" cache="false" style="border-radius: 4px;box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.7)"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText id="textUsuarioNombre" value="#{item.nombre}"/>  
+                        </p:column>
+                        <p:column headerText="Apellido paterno">
+                            <h:outputText id="textUsuarioApellidoPaterno" value="#{item.apellidoPaterno}"/>  
+                        </p:column>
+                        <p:column headerText="Apellido materno">
+                            <h:outputText id="textUsuarioApellidoMaterno" value="#{item.apellidoMaterno}"/>  
+                        </p:column>
+                        <p:column headerText="Correo electrónico">
+                            <h:outputText id="textUsuarioCorreoElectronico" value="#{item.correoElectronico}"/>  
+                        </p:column>
+                        <p:column headerText="Fecha de nacimiento">
+                            <h:outputText id="textUsuarioFechaNacimiento" value="#{item.fechaNacimiento}"/>  
+                        </p:column>
+                        <p:column headerText="Sexo">
+                            <h:outputText id="textUsuarioSexo" value="#{item.sexo ? 'Masculino' : 'Femenino'}"/> 
+                        </p:column>
+                        <p:column headerText="Teléfono">
+                            <h:outputText id="textUsuarioTelefono" value="#{item.telefono}"/>
+                        </p:column>
+                        <p:column headerText="Fecha de registro">
+                            <h:outputText id="textUsuarioFechaRegistro" value="#{item.fechaRegistro}"/>
+                        </p:column>
+                        <p:column headerText="">
+                            <p:commandButton id="buttonActualizarDatos" value="Actualizar datos" onclick="PF('dialogoEditarUsuario').show()"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton id="buttonActualizarAvatar" value="Actualizar avatar" onclick="PF('dialogoActualizarAvatar').show()"/>
+                        </p:column>
+                    </p:dataTable>
+                    
+                    <p:dialog id="dialogoEditarUsuario" header="Datos del usuario" widgetVar="dialogoEditarUsuario" resizable="false" showEffect="explode" hideEffect="explode" modal="true">
+                        <h:panelGrid id="panelEditarUsuario" columns="3">
+                            <p:outputLabel id="labelNombre" for="textNombre" value="Nombre"/>
+                            <p:inputText id="textNombre" label="Nombre" size="50" value="#{managedBeanViewUsuario.usuario.nombre}">
+                                <f:validator validatorId="validatorVacio"/>
+                            </p:inputText>
+                            <p:message id="messageNombre" for="textNombre"/>
+                            <p:outputLabel id="labelApellidoPaterno" for="textApellidoPaterno" value="Apellido paterno"/>
+                            <p:inputText id="textApellidoPaterno" label="Apellido paterno" size="50" value="#{managedBeanViewUsuario.usuario.apellidoPaterno}">
+                                <f:validator validatorId="validatorVacio"/>
+                            </p:inputText>
+                            <p:message id="messageApellidoPaterno" for="textApellidoPaterno"/>
+                            <p:outputLabel id="labelApellidoMaterno" for="textApellidoMaterno" value="Apellido materno"/>
+                            <p:inputText id="textApellidoMaterno" label="Apellido materno" size="50" value="#{managedBeanViewUsuario.usuario.apellidoMaterno}">
+                                <f:validator validatorId="validatorVacio"/>
+                            </p:inputText>
+                            <p:message id="messageApellidoMaterno" for="textApellidoMaterno"/>
+                            <p:outputLabel id="labelCorreoElectronico" for="textCorreoElectronico" value="Correo electrónico"/>
+                            <p:inputText id="textCorreoElectronico" label="Correo electrónico" size="50" title="Ejemplo: cyberarnaldo04@hotmail.com" value="#{managedBeanViewUsuario.usuario.correoElectronico}">
+                                <f:validator validatorId="validatorVacio"/>
+                                <f:validator validatorId="validatorEmail"/>
+                            </p:inputText>
+                            <h:panelGroup>
+                                <p:tooltip id="tooltipCorreoElectronico" for="textCorreoElectronico" showEvent="focus" hideEvent="blur"/>
+                                <p:message id="messageCorreoElectronico" for="textCorreoElectronico"/>
+                            </h:panelGroup> 
+                            <p:outputLabel id="labelFechaNacimiento" for="dateFechaNacimiento" value="Fecha de nacimiento"/>
+                            <p:calendar id="dateFechaNacimiento" label="Fecha de nacimiento" showOn="button" title="Ejemplo: dd/mm/yyyy" value="#{managedBeanViewUsuario.usuario.fechaNacimiento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Fecha de nacimiento es requerido."/>
+                            <p:message id="messageFechaNacimiento" for="dateFechaNacimiento"/>   
+                            <p:outputLabel id="labelSexo" for="radioSexo" value="Sexo"/>
+                            <p:selectOneRadio id="radioSexo" label="Sexo" value="#{managedBeanViewUsuario.usuario.sexo}">
+                                <f:selectItem id="labelMasculino" itemLabel="Masculino" itemValue="true"/>
+                                <f:selectItem id="labelFemenino" itemLabel="Femenino" itemValue="false"/>
+                            </p:selectOneRadio>
+                            <h:panelGroup></h:panelGroup>
+                            <p:outputLabel id="labelTelefono" for="textTelefono" value="Teléfono"/>
+                            <p:inputText id="textTelefono" label="Teléfono" size="50" value="#{managedBeanViewUsuario.usuario.telefono}"/>
+                            <h:panelGroup></h:panelGroup>
+                            <h:panelGroup></h:panelGroup>
+                            <p:commandButton id="buttonEditarUsuario" value="Guardar cambios" ajax="false" actionListener="#{managedBeanViewUsuario.update()}" update="formUsuario"/>
+                        </h:panelGrid>   
+                    </p:dialog>
+                </h:form>
+                
+                <p:dialog id="dialogoActualizarAvatar" header="Actualizar avatar" widgetVar="dialogoActualizarAvatar" resizable="false" showEffect="explode" hideEffect="explode" modal="true">
+                    <h:form id="formActualizarAvatar" class="formulario" enctype="multipart/form-data">
+                        <h:inputHidden value="#{managedBeanViewUsuario.usuario.codigoUsuario}"/>
+                        <p:fileUpload id="textAvatar" mode="simple" value="#{managedBeanViewUsuario.avatar}"/>
+                        <p:commandButton id="buttonActualizarAvatar" value="Actualizar avatar" ajax="false" actionListener="#{managedBeanViewUsuario.actualizarAvatar()}"/>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+
+            <ui:define name="bottom">
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

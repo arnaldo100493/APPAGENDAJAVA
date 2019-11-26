@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../layout/layout.xhtml">
+
+            <ui:define name="top">
+            </ui:define>
+
+            <ui:define name="content">
+                <h2>Mis amigos</h2>
+                <hr/>
+                <h:form id="formUsuarioAmigo" class="formulario">
+                    <p:growl id="mensajeGeneral" showDetail="true" sticky="false"/>
+                    <p:mindmap value="#{managedBeanViewUsuarioAmigo.cargarNodosUsuariosAmigosPorCodigoUsuario()}" style="height: 500px; width: 100%;">
+                        <p:ajax id="eventoClick" event="select" listener="#{managedBeanViewUsuarioAmigo.mostrarDialogoEditarUsuarioAmigo}"/> 
+                    </p:mindmap>  
+                </h:form>
+                <h:form id="formEditarUsuarioAmigo" class="formulario">
+                    <p:dialog id="dialogoEditarUsuarioAmigo" header="Datos del usuario" widgetVar="dialogoEditarUsuarioAmigo" resizable="false" showEffect="explode" hideEffect="explode" modal="true">
+                        <h:panelGrid id="panelEditarUsuarioAmigo" columns="3">
+                            <p:outputLabel id="labelNombre" for="textNombre" value="Nombre"/>
+                            <p:inputText id="textNombre" label="Nombre" size="50" value="#{managedBeanViewUsuarioAmigo.usuarioamigo.nombre}">
+                                <f:validator validatorId="validatorVacio"/>
+                            </p:inputText>
+                            <p:message id="messageNombre" for="textNombre"/>
+                            <p:outputLabel id="labelApellidoPaterno" for="textApellidoPaterno" value="Apellido paterno"/>
+                            <p:inputText id="textApellidoPaterno" label="Apellido paterno" size="50" value="#{managedBeanViewUsuarioAmigo.usuarioamigo.apellidoPaterno}">
+                                <f:validator validatorId="validatorVacio"/>
+                            </p:inputText>
+                            <p:message id="messageApellidoPaterno" for="textApellidoPaterno"/>
+                            <p:outputLabel id="labelApellidoMaterno" for="textApellidoMaterno" value="Apellido materno"/>
+                            <p:inputText id="textApellidoMaterno" label="Apellido materno" size="50" value="#{managedBeanViewUsuarioAmigo.usuarioamigo.apellidoMaterno}">
+                                <f:validator validatorId="validatorVacio"/>
+                            </p:inputText>
+                            <p:message id="messageApellidoMaterno" for="textApellidoMaterno"/>
+                            <p:outputLabel id="labelCorreoElectronico" for="textCorreoElectronico" value="Correo electrónico"/>
+                            <p:inputText id="textCorreoElectronico" label="Correo electrónico" size="50" title="Ejemplo: cyberarnaldo04@hotmail.com" value="#{managedBeanViewUsuarioAmigo.usuarioamigo.correoElectronico}">
+                                <f:validator validatorId="validatorVacio"/>
+                                <f:validator validatorId="validatorEmail"/>
+                            </p:inputText>
+                            <h:panelGroup>
+                                <p:tooltip id="tooltipCorreoElectronico" for="textCorreoElectronico" showEvent="focus" hideEvent="blur"/>
+                                <p:message id="messageCorreoElectronico" for="textCorreoElectronico"/>
+                            </h:panelGroup> 
+                            <p:outputLabel id="labelFechaNacimiento" for="dateFechaNacimiento" value="Fecha de nacimiento"/>
+                            <p:calendar id="dateFechaNacimiento" label="Fecha de nacimiento" showOn="button" title="Ejemplo: dd/mm/yyyy" value="#{managedBeanViewUsuarioAmigo.usuarioamigo.fechaNacimiento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Fecha de nacimiento es requerido."/>
+                            <p:message id="messageFechaNacimiento" for="dateFechaNacimiento"/>   
+                            <p:outputLabel id="labelSexo" for="radioSexo" value="Sexo"/>
+                            <p:selectOneRadio id="radioSexo" label="Sexo" value="#{managedBeanViewUsuarioAmigo.usuarioamigo.sexo}">
+                                <f:selectItem id="labelMasculino" itemLabel="Masculino" itemValue="true"/>
+                                <f:selectItem id="labelFemenino" itemLabel="Femenino" itemValue="false"/>
+                            </p:selectOneRadio>
+                            <h:panelGroup></h:panelGroup>
+                            <p:outputLabel id="labelTelefono" for="textTelefono" value="Teléfono"/>
+                            <p:inputText id="textTelefono" label="Teléfono" size="50" value="#{managedBeanViewUsuarioAmigo.usuarioamigo.telefono}"/>
+                            <h:panelGroup></h:panelGroup>
+                            <h:panelGroup></h:panelGroup>
+                            <p:commandButton id="buttonEditarUsuario" value="Guardar cambios" ajax="false" actionListener="#{managedBeanViewUsuarioAmigo.update()}"/>
+                        </h:panelGrid>   
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="bottom"> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

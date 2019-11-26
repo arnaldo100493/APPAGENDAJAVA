@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./layout/layout.xhtml">
+
+            <ui:define name="top">
+            </ui:define>
+
+            <ui:define name="content">
+                <h2>Inicio de sesión</h2>
+                <hr/>
+                <h:form id="formLogin">
+                    <p:growl id="mensajeGeneral" showDetail="true" sticky="false"/>
+                    <h:panelGrid id="panelLogin" columns="2">
+                        <p:outputLabel id="labelCorreoElectronico" for="textCorreoElectronico" value="Correo electrónico"/>
+                        <p:inputText id="textCorreoElectronico" label="Correo electrónico" size="40" value="#{managedBeanSessionLogin.correoElectronico}">
+                            <f:validator validatorId="validatorVacio"/>
+                            <f:validator validatorId="validatorEmail"/>
+                        </p:inputText>
+                        <p:outputLabel id="labelContrasenia" for="textContrasenia" value="Contraseña"/>
+                        <p:password id="textContrasenia" label="Contraseña" size="40" value="#{managedBeanSessionLogin.contrasenia}">
+                            <f:validator validatorId="validatorVacio"/>
+                        </p:password>
+                        <h:panelGroup></h:panelGroup>
+                        <p:commandButton id="buttonLogin" value="Ingresar" ajax="false" action="#{managedBeanSessionLogin.login()}" update="formLogin"/>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="bottom">
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
